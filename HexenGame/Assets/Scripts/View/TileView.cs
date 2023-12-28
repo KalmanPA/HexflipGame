@@ -9,13 +9,15 @@ using UnityEngine.EventSystems;
 namespace Hex.View
 {
 
-    public class TileView : MonoBehaviour, IPointerClickHandler
+    public class TileView : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         //We add the interface that is built in to detect clicks
         public Tile TileModel { get; private set; }//The tile object for the TileView
 
         [SerializeField] private MeshRenderer _renderer;
         [SerializeField] private Material _highlightedMaterial;
+
+        [SerializeField] private Material _hoverHighlightedMaterial;
 
         private Material _defaultMaterial;
 
@@ -33,19 +35,50 @@ namespace Hex.View
             TileModel = tile;//Sets the TileModel to the reciaved tile
             tile.IsHighlightChanged += Tile_IsHighlightChanged;//Subscribes the color changing method
                                                                //to the tiles higlightchanged event
+
+            tile.IsHoverHighlightChanged += Tile_IsHoverHighlightChanged;
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             //TileModel.IsHighlighted = true;
             //The function of the built in intrface
-            Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
+            //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
 
-            if (TileModel.IsHighlighted)
+            if (TileModel.IsHighlighted || TileModel.IsHoverHighlighted)//We only want to run this if the tile is among the higlighted ones
             {
                 TileModel.Click();//After dtecting a click on the object it calles the cliced method of the Tile,
                                   //which will call the clicked event
             }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
+
+            if (TileModel.IsHighlighted)//We only want to run this if the tile is among the higlighted ones
+            {
+                //TileModel.IsHoverHighlighted = true;
+                TileModel.OnHoverEnter();
+                //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
+            }
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (TileModel.IsHighlighted || TileModel.IsHoverHighlighted)//We only want to run this if the tile is among the higlighted ones
+            {
+                //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
+                TileModel.OnHoverExit();
+                
+            }
+        }
+
+        private void Tile_IsHoverHighlightChanged(object sender, EventArgs e)
+        {
+            //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
+            _renderer.sharedMaterial = TileModel.IsHoverHighlighted ? _hoverHighlightedMaterial : _defaultMaterial;
+            
         }
 
         private void Tile_IsHighlightChanged(object sender, EventArgs e)
@@ -53,5 +86,7 @@ namespace Hex.View
             //The method that changes the color and is subscribed to the Tiles Higlight changing event
             _renderer.sharedMaterial = TileModel.IsHighlighted ? _highlightedMaterial : _defaultMaterial;
         }
+
+        
     }
 }

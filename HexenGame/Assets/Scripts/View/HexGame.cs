@@ -17,13 +17,13 @@ namespace Hex.View
             _hexEngine.FindValidTiles();
         }
 
-        private void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    _hexEngine.FindValidTiles();
-            //}
-            //_hexEngine.FindValidTiles();
-        }
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        _hexEngine.ValidPositions.Clear();
+        //    }
+            
+        //}
     }
 }

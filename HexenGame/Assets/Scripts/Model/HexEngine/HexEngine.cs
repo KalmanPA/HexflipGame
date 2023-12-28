@@ -19,19 +19,23 @@ namespace Hex.Model.HexEngine
 
             InitializeBoard();
             board.PositionClicked += Board_PositionClicked;
+            board.TileHoverExited += Board_TileHoverExited;
 
             board.CurrentPlayersColor = _currentColor;
         }
 
+        private void Board_TileHoverExited(object sender, EventArgs e)
+        {
+            _board.HighlightTiles(_validPositions);
+        }
+
         private void Board_PositionClicked(object sender, PositionEventArgs e)
         {
-            
             ChangeCurrentColor();
         }
 
         private void ChangeCurrentColor()
         {
-            
 
             if (_currentColor == CurrentColor.Black)
             {
@@ -46,6 +50,9 @@ namespace Hex.Model.HexEngine
             {
                 tile.IsHighlighted = false;
                 tile.PiecesToBeFlipped.Clear();
+
+                tile.IsHoverHighlighted = false;
+                tile.TilesToBeHighlightedWhenHoveringOver.Clear();
             }
 
             _board.CurrentPlayersColor = _currentColor;

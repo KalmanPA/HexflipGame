@@ -10,6 +10,8 @@ namespace Hex.Model
         public event EventHandler<PieceEventArgs> PieceSpawned;
         public event EventHandler<PositionEventArgs> PositionClicked;
 
+        public event EventHandler TileHoverExited;
+
         public CurrentColor CurrentPlayersColor;
 
         //Creates a new Dictionary with the board's tiles and their corresponding grid positions
@@ -22,10 +24,44 @@ namespace Hex.Model
             //A method that creates a new tile, adds it to the Dictionary and returns it. Gets called in BoardView.
             Tile tile = new Tile(position);
             tile.Clicked += Tile_Clicked;//Subscribe method that will change their Highlight property
+            tile.HoverEntered += Tile_HoverEntered;
+            tile.HoverExited += Tile_HoverExited;
 
             Tiles.Add(position, tile);//Adds it to Dictionary
 
             return tile;//Need it for the BoardView to assign it to the TileView
+        }
+
+        private void Tile_HoverExited(object sender, EventArgs e)
+        {
+            if (sender is Tile tileModel)
+            {
+                foreach (Tile tile in tileModel.TilesToBeHighlightedWhenHoveringOver)
+                {
+                    tile.IsHoverHighlighted = false;
+                }
+
+                TileHoverExited?.Invoke(this, EventArgs.Empty);
+            }
+
+
+        }
+
+        private void Tile_HoverEntered(object sender, EventArgs e)
+        {
+
+            if (sender is Tile tileModel)
+            {
+                foreach (Tile tile in Tiles.Values)
+                {
+                    tile.IsHighlighted = false;
+                }
+
+                foreach (Tile tile in tileModel.TilesToBeHighlightedWhenHoveringOver)
+                {
+                    tile.IsHoverHighlighted = true;
+                }
+            }
         }
 
         private void Tile_Clicked(object sender, System.EventArgs e)
@@ -41,7 +77,13 @@ namespace Hex.Model
 
                 PositionClicked?.Invoke(this, new PositionEventArgs(tileModel.GridPosition));
 
+                foreach (Tile tile in tileModel.TilesToBeHighlightedWhenHoveringOver)
+                {
+                    tile.IsHoverHighlighted = false;
+                }
+
                 
+
             }
 
 

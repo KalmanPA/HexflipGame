@@ -1,0 +1,17 @@
+{
+    "name": "Hex.View",
+    "rootNamespace": "",
+    "references": [
+        "GUID:df854db435872ac4d93efc36a2892e20",
+        "GUID:7a9adc6c0afc82e47ab0a18573d71e8e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

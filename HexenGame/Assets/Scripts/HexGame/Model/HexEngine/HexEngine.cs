@@ -8,6 +8,8 @@ namespace Hex.Model.HexEngine
 {
     public class HexEngine
     {
+        public CurrentColor WinnerColor;
+
         public int NumberOfWhitePieces;
         public int NumberOfBlackPieces;
 
@@ -74,7 +76,7 @@ namespace Hex.Model.HexEngine
             FindValidTiles();
         }
 
-        private void CountNumberOfPieces()
+        public void CountNumberOfPieces()
         {
             NumberOfBlackPieces = 0;
             NumberOfWhitePieces = 0;
@@ -126,10 +128,24 @@ namespace Hex.Model.HexEngine
 
             if (AreTilesHighlighted())
             {
+                WinnerColor = DecideWinner();
+
                 GameOver?.Invoke(this, EventArgs.Empty);
             }
 
 
+        }
+
+        private CurrentColor DecideWinner()
+        {
+            if (NumberOfWhitePieces > NumberOfBlackPieces)
+            {
+                return CurrentColor.White;
+            }
+            else
+            {
+                return CurrentColor.Black;
+            }
         }
 
         private bool AreTilesHighlighted()

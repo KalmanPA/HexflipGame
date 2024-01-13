@@ -35,6 +35,12 @@ namespace Hex.View
 
             _hexEngine.FindValidTiles();
 
+            //_hexEngine.CountNumberOfPieces();
+
+            //NumberOfWhitePieces = _hexEngine.NumberOfWhitePieces;
+
+            //NumberOfBlackPieces = _hexEngine.NumberOfBlackPieces;
+
             _hexEngine.GameOver += _hexEngine_GameOver;
 
             _hexEngine.PlayerColorChanged += _hexEngine_PlayerColorChanged;
@@ -56,6 +62,15 @@ namespace Hex.View
         private void _hexEngine_GameOver(object sender, System.EventArgs e)
         {
             _pauseUI.MenuTitleText = "Game Over";
+
+            if (_hexEngine.WinnerColor == CurrentColor.White)
+            {
+                _pauseUI.WinText = "White wins";
+            }
+            else
+            {
+                _pauseUI.WinText = "Black wins";
+            }
 
             //IsGameOver = true;
 

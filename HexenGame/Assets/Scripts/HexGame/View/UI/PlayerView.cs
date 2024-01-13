@@ -10,14 +10,26 @@ public class PlayerView
     private readonly VisualElement _playerPanel;
     //private ListView _piecesListView;
 
+    private readonly int _numberOfStartingBlackPieces = 4;
+    private readonly int _numberOfStartingWhitePieces = 3;
 
-
-    public PlayerView(CurrentColor playerColor, VisualElement playerColorName)
+    public PlayerView(CurrentColor playerColor, VisualElement playerPanel)
     {
         _playerColor = playerColor;
-        _playerPanel = playerColorName;
+        _playerPanel = playerPanel;
 
-        playerColorName.Q<Label>().text = playerColor.ToString();
+        playerPanel.Q<Label>("Name").text = playerColor.ToString();
+
+        if (playerColor == CurrentColor.White)
+        {
+            playerPanel.Q<Label>("Number").text = _numberOfStartingWhitePieces.ToString();
+        }
+
+        if (playerColor == CurrentColor.Black)
+        {
+            playerPanel.Q<Label>("Number").text = _numberOfStartingBlackPieces.ToString();
+        }
+
 
         //playerPanel.Q<Label>().set
 
@@ -33,11 +45,11 @@ public class PlayerView
 
 
 
-    public void SetHighlighted(bool isHighlighted)
+    public void SetHighlighted(bool isHighlighted, int numberOfPieces)
     {
-        string activeClassName = "activePlayer";
+        _playerPanel.Q<Label>("Number").text = numberOfPieces.ToString();
 
-        
+        string activeClassName = "activePlayer";
 
         if (isHighlighted)
         {

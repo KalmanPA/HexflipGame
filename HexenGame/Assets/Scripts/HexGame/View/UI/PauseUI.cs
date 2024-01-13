@@ -13,14 +13,22 @@ namespace Hex.View.UI
 
         public string MenuTitleText;
 
+        public string WinText;
+
         UIDocument _document;
         private void Awake()
         {
             MenuTitleText = "Paused";
 
+            WinText = "";
+
             UIDocument document = GetComponent<UIDocument>();
 
             Label titel = document.rootVisualElement.Q<Label>("MenuName");
+
+            Label winner = document.rootVisualElement.Q<Label>("WinText");
+
+            winner.text = WinText;
 
             titel.text = MenuTitleText;
 
@@ -54,6 +62,10 @@ namespace Hex.View.UI
             Label titel = document.rootVisualElement.Q<Label>("MenuName");
 
             titel.text = MenuTitleText;
+
+            Label winner = document.rootVisualElement.Q<Label>("WinText");
+
+            winner.text = WinText;
         }
 
         public void Hide()

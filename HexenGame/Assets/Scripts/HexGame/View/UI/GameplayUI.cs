@@ -15,6 +15,8 @@ namespace Hex.View.UI
 
         private CurrentColor _currentColorOfPlayer;
 
+        private readonly int _numberOfStartingBlackPieces = 4;
+
         [SerializeField] private HexGame _hexGame;
 
         //public CurrentColor CurrentColorOfPlayer
@@ -42,20 +44,20 @@ namespace Hex.View.UI
         {
             if (_hexGame.CurrentPlayerColor == CurrentColor.White)
             {
-                _player1Panel.SetHighlighted(true);
-                _player2Panel.SetHighlighted(false);
+                _player1Panel.SetHighlighted(true, _hexGame.NumberOfWhitePieces);
+                _player2Panel.SetHighlighted(false, _hexGame.NumberOfBlackPieces);
             }
             else
             {
-                _player1Panel.SetHighlighted(false);
-                _player2Panel.SetHighlighted(true);
+                _player1Panel.SetHighlighted(false, _hexGame.NumberOfWhitePieces);
+                _player2Panel.SetHighlighted(true, _hexGame.NumberOfBlackPieces);
             }
         }
 
         void Start()
         {
             //Board.Instance.PlayerChanged += OnPlayerChanged;
-            _player2Panel.SetHighlighted(false);
+            _player2Panel.SetHighlighted(false, _numberOfStartingBlackPieces);
             //OnPlayerChanged(Board.Instance, EventArgs.Empty);
         }
 

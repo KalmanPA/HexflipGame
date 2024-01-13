@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Chess.View.States
+namespace Hex.View.States
 {
     public class GameStateSystem : MonoBehaviour
     {

@@ -1,20 +1,67 @@
+using Hex.View.States;
+using Hex.View.UI;
 using Hex.Model.HexEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Hex.Model;
+using System;
 
 namespace Hex.View
 {
 
     public class HexGame : MonoBehaviour
     {
+        public int NumberOfWhitePieces;
+        public int NumberOfBlackPieces;
+
+
+        //public static bool IsGameOver;
+
+        [SerializeField] private PauseUI _pauseUI;
+        //[SerializeField] private GameplayUI _gameplayUI;
+
+        public event EventHandler PlayerColorChanged;
+
+        public CurrentColor CurrentPlayerColor;
+
         private HexEngine _hexEngine;
         void Start()
         {
+            CurrentPlayerColor = CurrentColor.White;
+
             BoardView bv = FindAnyObjectByType<BoardView>();
             _hexEngine = new HexEngine(bv.BoardModel, Model.CurrentColor.White);
 
             _hexEngine.FindValidTiles();
+
+            _hexEngine.GameOver += _hexEngine_GameOver;
+
+            _hexEngine.PlayerColorChanged += _hexEngine_PlayerColorChanged;
+
+            //_pauseUI.MenuTitleText = "Game Over";
+        }
+
+        private void _hexEngine_PlayerColorChanged(object sender, System.EventArgs e)
+        {
+            CurrentPlayerColor = _hexEngine.CurrentColor;
+
+            NumberOfWhitePieces = _hexEngine.NumberOfWhitePieces;
+
+            NumberOfBlackPieces = _hexEngine.NumberOfBlackPieces;
+
+            PlayerColorChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void _hexEngine_GameOver(object sender, System.EventArgs e)
+        {
+            _pauseUI.MenuTitleText = "Game Over";
+
+            //IsGameOver = true;
+
+            GameState.IsGameOver = true;
+
+            PauseState.IsGameOver = true;
         }
 
         //private void Update()
@@ -23,7 +70,7 @@ namespace Hex.View
         //    {
         //        _hexEngine.ValidPositions.Clear();
         //    }
-            
+
         //}
     }
 }

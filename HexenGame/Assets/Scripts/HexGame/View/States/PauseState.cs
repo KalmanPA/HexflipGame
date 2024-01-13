@@ -1,12 +1,15 @@
-using Chess.View.UI;
+using Hex.View.UI;
+using Hex.View;
 using StatePattern;
 using System;
 using UnityEngine;
 
-namespace Chess.View.States
+namespace Hex.View.States
 {
     public class PauseState : IState
     {
+        public static bool IsGameOver;
+
         private readonly GameStateSystem _stateSystem;
         private PauseUI _pauseUI;
         public PauseState(GameStateSystem stateSystem)
@@ -44,10 +47,14 @@ namespace Chess.View.States
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (!IsGameOver)
             {
-                _stateSystem.StateMachine.MoveToState(_stateSystem.GameState);
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    _stateSystem.StateMachine.MoveToState(_stateSystem.GameState);
+                }
             }
+            
         }
     }
 }

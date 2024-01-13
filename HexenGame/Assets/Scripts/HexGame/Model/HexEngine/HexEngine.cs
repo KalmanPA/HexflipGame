@@ -2,26 +2,36 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Hex.Model.HexEngine
 {
     public class HexEngine
     {
+        public int NumberOfWhitePieces;
+        public int NumberOfBlackPieces;
+
+        public event EventHandler GameOver;
+
+        public event EventHandler PlayerColorChanged;
+
+        //private readonly GridPosition _invalidPosition = new GridPosition(5,5,5);
+
         private readonly Board _board;
-        private CurrentColor _currentColor;//For the starting player
+        public CurrentColor CurrentColor;//For the starting player
 
         private List<GridPosition> _validPositions = new List<GridPosition>();
 
         public HexEngine(Board board, CurrentColor currentColor)
         {
             _board = board;
-            _currentColor = currentColor;
+            CurrentColor = currentColor;
 
             InitializeBoard();
             board.PositionClicked += Board_PositionClicked;
             board.TileHoverExited += Board_TileHoverExited;
 
-            board.CurrentPlayersColor = _currentColor;
+            board.CurrentPlayersColor = CurrentColor;
         }
 
         private void Board_TileHoverExited(object sender, EventArgs e)
@@ -37,13 +47,13 @@ namespace Hex.Model.HexEngine
         private void ChangeCurrentColor()
         {
 
-            if (_currentColor == CurrentColor.Black)
+            if (CurrentColor == CurrentColor.Black)
             {
-                _currentColor = CurrentColor.White;
+                CurrentColor = CurrentColor.White;
             }
             else
             {
-                _currentColor = CurrentColor.Black;
+                CurrentColor = CurrentColor.Black;
             }
 
             foreach (Tile tile in _board.Tiles.Values)
@@ -55,9 +65,31 @@ namespace Hex.Model.HexEngine
                 tile.TilesToBeHighlightedWhenHoveringOver.Clear();
             }
 
-            _board.CurrentPlayersColor = _currentColor;
+            _board.CurrentPlayersColor = CurrentColor;
+
+            CountNumberOfPieces();
+
+            PlayerColorChanged?.Invoke(this, EventArgs.Empty);
 
             FindValidTiles();
+        }
+
+        private void CountNumberOfPieces()
+        {
+            NumberOfBlackPieces = 0;
+            NumberOfWhitePieces = 0;
+
+            foreach (Piece piece in _board.Pieces.Values)
+            {
+                if (piece.CurrentColor == CurrentColor.White)
+                {
+                    NumberOfWhitePieces++;
+                }
+                else
+                {
+                    NumberOfBlackPieces++;
+                }
+            }
         }
 
         public void FindValidTiles()
@@ -68,7 +100,7 @@ namespace Hex.Model.HexEngine
             
             foreach (Piece piece in _board.Pieces.Values)
             {
-                if (piece.CurrentColor == _currentColor)
+                if (piece.CurrentColor == CurrentColor)
                 {
                     _validPositions.AddRange(moveSet.GetMovePositions(_board, piece));
                 }
@@ -78,8 +110,47 @@ namespace Hex.Model.HexEngine
             {
                 _board.HighlightTiles(_validPositions);
             }
-            
+
+
+
+            //foreach (GridPosition positin in _validPositions)
+            //{
+            //    if (positin == new GridPosition(5,5,5))
+            //    {
+            //        _validPositions.Remove(positin);
+            //    }
+            //}
+
+            //RemoveInvalidPositions(_validPositions, _invalidPosition);
+
+
+            if (AreTilesHighlighted())
+            {
+                GameOver?.Invoke(this, EventArgs.Empty);
+            }
+
+
         }
+
+        private bool AreTilesHighlighted()
+        {
+            foreach (Tile tile in _board.Tiles.Values)
+            {
+                if (tile.IsHighlighted)
+                {
+                    // If any element is true, return false
+                    return false;
+                }
+            }
+            // If no true element is found, return true
+            return true;
+        }
+
+        //private void RemoveInvalidPositions(List<GridPosition> list, GridPosition vectorToRemove)
+        //{
+        //    // Removes invalid positions
+        //    list.RemoveAll(item => item == vectorToRemove);
+        //}
 
         private void InitializeBoard()
         {

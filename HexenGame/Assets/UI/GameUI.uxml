@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="PlayerName" src="project://database/Assets/UI/Templates/PlayerName.uxml?fileID=9197481963319205126&amp;guid=f71a6169ca5c56445a0a45a6492085ad&amp;type=3#PlayerName" />
+    <Style src="project://database/Assets/UI/PlayerPanel.uss?fileID=7433441132597879392&amp;guid=4685ef709a53174409aa198060a187ee&amp;type=3#PlayerPanel" />
+    <ui:Instance template="PlayerName" name="Player1" class="activePlayer" style="width: 300px; -unity-text-align: upper-center; left: 20px; top: 20px;" />
+    <ui:Instance template="PlayerName" name="Player2" class="activePlayer" style="left: auto; width: auto; top: 20px; align-self: flex-end; justify-content: flex-start; align-items: stretch; position: absolute; -unity-text-align: upper-center; right: 20px;" />
+</ui:UXML>

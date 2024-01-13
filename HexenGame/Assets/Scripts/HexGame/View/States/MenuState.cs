@@ -1,9 +1,9 @@
-using Chess.View.UI;
+using Hex.View.UI;
 using StatePattern;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Chess.View.States
+namespace Hex.View.States
 {
     public class MenuState : IState
     {

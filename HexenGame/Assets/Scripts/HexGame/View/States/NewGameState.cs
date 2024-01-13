@@ -1,8 +1,9 @@
-using Chess.View.UI;
+using Hex.View.UI;
+using Hex.View;
 using StatePattern;
 using UnityEngine.SceneManagement;
 
-namespace Chess.View.States
+namespace Hex.View.States
 {
     public class NewGameState : IState
     {
@@ -15,6 +16,11 @@ namespace Chess.View.States
 
         public void OnEnter()
         {
+            //HexGame.IsGameOver = false;
+
+            PauseState.IsGameOver = false;
+            GameState.IsGameOver = false;
+
             var loadOperation = SceneManager.LoadSceneAsync("GameScene");
             loadOperation.completed += (op) =>
             {

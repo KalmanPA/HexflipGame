@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Chess.View.UI
+namespace Hex.View.UI
 {
     public class MenuUI : MonoBehaviour
     {

@@ -4,17 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Chess.View.UI
+namespace Hex.View.UI
 {
     public class PauseUI : MonoBehaviour
     {
         public event Action NewGameClicked;
         public event Action MenuClicked;
 
+        public string MenuTitleText;
+
         UIDocument _document;
         private void Awake()
         {
+            MenuTitleText = "Paused";
+
             UIDocument document = GetComponent<UIDocument>();
+
+            Label titel = document.rootVisualElement.Q<Label>("MenuName");
+
+            titel.text = MenuTitleText;
 
             Button newGameButton = document.rootVisualElement.Q<Button>("NewGameButton");
             Button menuButton = document.rootVisualElement.Q<Button>("MenuButton");
@@ -40,6 +48,12 @@ namespace Chess.View.UI
         public void Show()
         {
             _document.rootVisualElement.visible = true;
+
+            UIDocument document = GetComponent<UIDocument>();
+
+            Label titel = document.rootVisualElement.Q<Label>("MenuName");
+
+            titel.text = MenuTitleText;
         }
 
         public void Hide()

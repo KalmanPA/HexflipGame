@@ -1,7 +1,9 @@
 {
     "name": "Hex.Model",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:b335c3a5f9e4e7a4a9e0906908569cbe"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -82,7 +82,7 @@ namespace Hex.Model
                     tile.IsHoverHighlighted = false;
                 }
 
-                
+
 
             }
 
@@ -106,6 +106,7 @@ namespace Hex.Model
             Pieces.Add(pos, piece);
 
             PieceSpawned?.Invoke(this, new PieceEventArgs(piece));
+
 
             return piece;
         }

@@ -78,16 +78,16 @@ namespace Hex.View
 
         private void HexEngine_GameOver(object sender, System.EventArgs e)
         {
-            
+            WinText = _hexEngine.WinnerTeam;
 
-            if (_hexEngine.WinnerColor == CurrentColor.White)
-            {
-                WinText = "White wins";
-            }
-            else
-            {
-                WinText = "Black wins";
-            }
+            //if (_hexEngine.WinnerTeam == CurrentColor.White)
+            //{
+            //    WinText = "White wins";
+            //}
+            //else
+            //{
+            //    WinText = "Black wins";
+            //}
 
             //IsGameOver = true;
 

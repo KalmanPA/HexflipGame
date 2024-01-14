@@ -9,7 +9,7 @@ namespace Hex.Model.HexEngine
 {
     public class HexEngine
     {
-        public CurrentColor WinnerColor;
+        public string WinnerTeam;
 
         public int NumberOfWhitePieces;
         public int NumberOfBlackPieces;
@@ -138,7 +138,7 @@ namespace Hex.Model.HexEngine
 
             if (AreTilesHighlighted())
             {
-                WinnerColor = DecideWinner();
+                WinnerTeam = DecideWinner();
 
                 GameOver?.Invoke(this, EventArgs.Empty);
             }
@@ -146,15 +146,19 @@ namespace Hex.Model.HexEngine
 
         }
 
-        private CurrentColor DecideWinner()
+        private string DecideWinner()
         {
             if (NumberOfWhitePieces > NumberOfBlackPieces)
             {
-                return CurrentColor.White;
+                return "White";
+            }
+            else if (NumberOfWhitePieces < NumberOfBlackPieces)
+            {
+                return "Black";
             }
             else
             {
-                return CurrentColor.Black;
+                return "Draw";
             }
         }
 

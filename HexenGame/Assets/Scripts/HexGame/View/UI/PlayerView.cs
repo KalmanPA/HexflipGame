@@ -22,12 +22,12 @@ public class PlayerView
 
         if (playerColor == CurrentColor.White)
         {
-            playerPanel.Q<Label>("Number").text = _numberOfStartingWhitePieces.ToString();
+            playerPanel.Q<Label>("Number").text = $"Score: {_numberOfStartingWhitePieces}";
         }
 
         if (playerColor == CurrentColor.Black)
         {
-            playerPanel.Q<Label>("Number").text = _numberOfStartingBlackPieces.ToString();
+            playerPanel.Q<Label>("Number").text = $"Score: {_numberOfStartingBlackPieces}";
         }
 
 
@@ -47,7 +47,7 @@ public class PlayerView
 
     public void SetHighlighted(bool isHighlighted, int numberOfPieces)
     {
-        _playerPanel.Q<Label>("Number").text = numberOfPieces.ToString();
+        _playerPanel.Q<Label>("Number").text = $"Score: {numberOfPieces}";
 
         string activeClassName = "activePlayer";
 

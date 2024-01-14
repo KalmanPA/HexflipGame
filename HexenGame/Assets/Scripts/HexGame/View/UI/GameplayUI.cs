@@ -13,11 +13,11 @@ namespace Hex.View.UI
     {
         private PlayerView _player1Panel, _player2Panel;
 
-        private CurrentColor _currentColorOfPlayer;
+        //private CurrentColor _currentColorOfPlayer;
 
         private readonly int _numberOfStartingBlackPieces = 4;
 
-        [SerializeField] private HexGame _hexGame;
+        private HexGame _hexGame;
 
         //public CurrentColor CurrentColorOfPlayer
         //{
@@ -31,6 +31,8 @@ namespace Hex.View.UI
         // Start is called before the first frame update
         void Awake()
         {
+            _hexGame = GameObject.FindObjectOfType<HexGame>();
+
             _hexGame.PlayerColorChanged += _hexGame_PlayerColorChanged;
 
             UIDocument document = GetComponent<UIDocument>();

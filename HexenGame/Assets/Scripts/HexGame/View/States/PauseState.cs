@@ -8,10 +8,10 @@ namespace Hex.View.States
 {
     public class PauseState : IState
     {
-        public static bool IsGameOver;
 
         private readonly GameStateSystem _stateSystem;
         private PauseUI _pauseUI;
+
         public PauseState(GameStateSystem stateSystem)
         {
             _stateSystem = stateSystem;
@@ -21,18 +21,20 @@ namespace Hex.View.States
         {
             _pauseUI = GameObject.FindObjectOfType<PauseUI>();
 
-            _pauseUI.MenuClicked += _pauseUI_MenuClicked;
-            _pauseUI.NewGameClicked += _pauseUI_NewGameClicked;
+            _pauseUI.MenuClicked += PauseUI_MenuClicked;
+            _pauseUI.NewGameClicked += PauseUI_NewGameClicked;
 
             _pauseUI.Show();
         }
 
-        private void _pauseUI_MenuClicked()
+        
+
+        private void PauseUI_MenuClicked()
         {
             _stateSystem.StateMachine.MoveToState(_stateSystem.MenuState);
         }
 
-        private void _pauseUI_NewGameClicked()
+        private void PauseUI_NewGameClicked()
         {
             _stateSystem.StateMachine.MoveToState(_stateSystem.NewGameState);
         }
@@ -40,21 +42,19 @@ namespace Hex.View.States
         public void OnExit()
         {
 
-            _pauseUI.MenuClicked -= _pauseUI_NewGameClicked;
-            _pauseUI.NewGameClicked -= _pauseUI_MenuClicked;
+            _pauseUI.MenuClicked -= PauseUI_NewGameClicked;
+            _pauseUI.NewGameClicked -= PauseUI_MenuClicked;
             _pauseUI?.Hide();
         }
 
         public void Update()
         {
-            if (!IsGameOver)
+
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    _stateSystem.StateMachine.MoveToState(_stateSystem.GameState);
-                }
+                _stateSystem.StateMachine.MoveToState(_stateSystem.GameState);
             }
-            
+
         }
     }
 }

@@ -18,17 +18,25 @@ namespace Hex.View.States
         {
             //HexGame.IsGameOver = false;
 
-            PauseState.IsGameOver = false;
-            GameState.IsGameOver = false;
+            //PauseState.IsGameOver = false;
+            //GameState.IsGameOver = false;
 
             var loadOperation = SceneManager.LoadSceneAsync("GameScene");
+
             loadOperation.completed += (op) =>
             {
                 _stateSystem.StateMachine.MoveToState(_stateSystem.GameState);
             };
 
+            //loadOperation.completed += LoadOperation_completed;
+
 
         }
+
+        //private void LoadOperation_completed(UnityEngine.AsyncOperation obj)
+        //{
+        //    _stateSystem.StateMachine.MoveToState(_stateSystem.GameState);
+        //}
 
         public void OnExit()
         {

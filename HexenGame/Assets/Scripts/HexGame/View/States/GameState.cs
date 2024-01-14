@@ -10,7 +10,9 @@ namespace Hex.View.States
     {
         private readonly GameStateSystem _stateSystem;
 
-        public static bool IsGameOver;
+        private HexGame _hexGame;
+
+        //public static bool IsGameOver;
         public GameState(GameStateSystem stateSystem)
         {
             _stateSystem = stateSystem;
@@ -18,11 +20,21 @@ namespace Hex.View.States
 
         public void OnEnter()
         {
+
             if (SceneManager.GetActiveScene().name != "GameScene")
             {
                 SceneManager.LoadScene("GameScene");
             }
 
+            _hexGame = GameObject.FindObjectOfType<HexGame>();
+
+            _hexGame.GameOver += HexGame_GameOver;
+
+        }
+
+        private void HexGame_GameOver(object sender, System.EventArgs e)
+        {
+            _stateSystem.StateMachine.MoveToState(_stateSystem.GameOverState);
         }
 
         public void OnExit()
@@ -32,18 +44,11 @@ namespace Hex.View.States
 
         public void Update()
         {
-            if (!IsGameOver)
-            {
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    _stateSystem.StateMachine.MoveToState(_stateSystem.PauseState);
-                }
-            }
-            else
+            
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 _stateSystem.StateMachine.MoveToState(_stateSystem.PauseState);
             }
-
 
         }
     }

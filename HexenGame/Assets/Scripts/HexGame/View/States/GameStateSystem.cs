@@ -18,6 +18,8 @@ namespace Hex.View.States
         public PauseState PauseState { get; private set; }
         public NewGameState NewGameState { get; private set; }
 
+        public GameOverState GameOverState { get; private set; }
+
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -30,6 +32,8 @@ namespace Hex.View.States
             PauseState = new PauseState(this);
 
             NewGameState = new NewGameState(this);
+
+            GameOverState = new GameOverState(this);
 
             StateMachine = new StateMachine(MenuState);
         }

@@ -12,6 +12,9 @@ namespace Hex.View
 
     public class HexGame : MonoBehaviour
     {
+        public event EventHandler GameOver;
+
+
         public int NumberOfWhitePieces;
         public int NumberOfBlackPieces;
 
@@ -41,9 +44,9 @@ namespace Hex.View
 
             //NumberOfBlackPieces = _hexEngine.NumberOfBlackPieces;
 
-            _hexEngine.GameOver += _hexEngine_GameOver;
+            _hexEngine.GameOver += HexEngine_GameOver;
 
-            _hexEngine.PlayerColorChanged += _hexEngine_PlayerColorChanged;
+            _hexEngine.PlayerColorChanged += HexEngine_PlayerColorChanged;
 
             //_pauseUI.MenuTitleText = "Game Over";
         }
@@ -60,7 +63,7 @@ namespace Hex.View
             }
         }
 
-        private void _hexEngine_PlayerColorChanged(object sender, System.EventArgs e)
+        private void HexEngine_PlayerColorChanged(object sender, System.EventArgs e)
         {
             CurrentPlayerColor = _hexEngine.CurrentColor;
 
@@ -71,7 +74,7 @@ namespace Hex.View
             PlayerColorChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void _hexEngine_GameOver(object sender, System.EventArgs e)
+        private void HexEngine_GameOver(object sender, System.EventArgs e)
         {
             _pauseUI.MenuTitleText = "Game Over";
 
@@ -86,9 +89,11 @@ namespace Hex.View
 
             //IsGameOver = true;
 
-            GameState.IsGameOver = true;
+            GameOver?.Invoke(this, EventArgs.Empty);
 
-            PauseState.IsGameOver = true;
+            //GameState.IsGameOver = true;
+
+            //PauseState.IsGameOver = true;
         }
 
         //private void Update()

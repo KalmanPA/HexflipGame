@@ -12,6 +12,8 @@ namespace Hex.View
 
     public class HexGame : MonoBehaviour
     {
+        public string WinText;
+
         public event EventHandler GameOver;
 
 
@@ -21,7 +23,7 @@ namespace Hex.View
 
         //public static bool IsGameOver;
 
-        [SerializeField] private PauseUI _pauseUI;
+        //[SerializeField] private PauseUI _pauseUI;
         //[SerializeField] private GameplayUI _gameplayUI;
 
         public event EventHandler PlayerColorChanged;
@@ -76,15 +78,15 @@ namespace Hex.View
 
         private void HexEngine_GameOver(object sender, System.EventArgs e)
         {
-            _pauseUI.MenuTitleText = "Game Over";
+            
 
             if (_hexEngine.WinnerColor == CurrentColor.White)
             {
-                _pauseUI.WinText = "White wins";
+                WinText = "White wins";
             }
             else
             {
-                _pauseUI.WinText = "Black wins";
+                WinText = "Black wins";
             }
 
             //IsGameOver = true;

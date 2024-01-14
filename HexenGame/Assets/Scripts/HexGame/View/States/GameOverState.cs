@@ -10,7 +10,7 @@ namespace Hex.View.States
     public class GameOverState : IState
     {
         private readonly GameStateSystem _stateSystem;
-        private PauseUI _pauseUI;
+        private GameOverUI _gameOverUI;
 
         //private HexGame _hexGame;
 
@@ -20,15 +20,15 @@ namespace Hex.View.States
         }
         public void OnEnter()
         {
-            _pauseUI = GameObject.FindObjectOfType<PauseUI>();
+            _gameOverUI = GameObject.FindObjectOfType<GameOverUI>();
             //_hexGame = GameObject.FindObjectOfType<HexGame>();
 
-            _pauseUI.MenuClicked += PauseUI_MenuClicked;
-            _pauseUI.NewGameClicked += PauseUI_NewGameClicked;
+            _gameOverUI.MenuClicked += PauseUI_MenuClicked;
+            _gameOverUI.NewGameClicked += PauseUI_NewGameClicked;
 
             //_hexGame.GameOver += _hexGame_GameOver;
 
-            _pauseUI.Show();
+            _gameOverUI.Show();
         }
 
         
@@ -45,9 +45,9 @@ namespace Hex.View.States
 
         public void OnExit()
         {
-            _pauseUI.MenuClicked -= PauseUI_NewGameClicked;
-            _pauseUI.NewGameClicked -= PauseUI_MenuClicked;
-            _pauseUI?.Hide();
+            _gameOverUI.MenuClicked -= PauseUI_NewGameClicked;
+            _gameOverUI.NewGameClicked -= PauseUI_MenuClicked;
+            _gameOverUI?.Hide();
         }
 
         public void Update()

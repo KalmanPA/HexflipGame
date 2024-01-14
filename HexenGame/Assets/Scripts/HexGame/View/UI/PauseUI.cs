@@ -11,26 +11,26 @@ namespace Hex.View.UI
         public event Action NewGameClicked;
         public event Action MenuClicked;
 
-        public string MenuTitleText;
+        //public string MenuTitleText;
 
-        public string WinText;
+        //public string WinText;
 
         UIDocument _document;
         private void Awake()
         {
-            MenuTitleText = "Paused";
+            //MenuTitleText = "Paused";
 
-            WinText = "";
+            //WinText = "";
 
             UIDocument document = GetComponent<UIDocument>();
 
-            Label titel = document.rootVisualElement.Q<Label>("MenuName");
+            //Label titel = document.rootVisualElement.Q<Label>("MenuName");
 
-            Label winner = document.rootVisualElement.Q<Label>("WinText");
+            //Label winner = document.rootVisualElement.Q<Label>("WinText");
 
-            winner.text = WinText;
+            //winner.text = WinText;
 
-            titel.text = MenuTitleText;
+            //titel.text = MenuTitleText;
 
             Button newGameButton = document.rootVisualElement.Q<Button>("NewGameButton");
             Button menuButton = document.rootVisualElement.Q<Button>("MenuButton");
@@ -59,13 +59,13 @@ namespace Hex.View.UI
 
             UIDocument document = GetComponent<UIDocument>();
 
-            Label titel = document.rootVisualElement.Q<Label>("MenuName");
+            //Label titel = document.rootVisualElement.Q<Label>("MenuName");
 
-            titel.text = MenuTitleText;
+            //titel.text = MenuTitleText;
 
-            Label winner = document.rootVisualElement.Q<Label>("WinText");
+            //Label winner = document.rootVisualElement.Q<Label>("WinText");
 
-            winner.text = WinText;
+            //winner.text = WinText;
         }
 
         public void Hide()

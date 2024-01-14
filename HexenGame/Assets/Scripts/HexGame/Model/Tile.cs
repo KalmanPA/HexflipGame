@@ -9,6 +9,8 @@ namespace Hex.Model
     {
         public List<Piece> PiecesToBeFlipped = new List<Piece>();
         public List<Tile> TilesToBeHighlightedWhenHoveringOver = new List<Tile>();
+
+        public List<Piece> PiecesToBeReflipped = new List<Piece>();
         //Functionalities: regidter clicks, change color
 
         public event EventHandler IsHoverHighlightChanged;
@@ -83,17 +85,7 @@ namespace Hex.Model
 
         private void OnClick()
         {   
-            foreach (Piece piece in PiecesToBeFlipped)//TODO put this in board
-            {
-                if (piece.CurrentColor == CurrentColor.White)
-                {
-                    piece.CurrentColor = CurrentColor.Black;
-                }
-                else
-                {
-                    piece.CurrentColor = CurrentColor.White;
-                }
-            }
+            
 
             Clicked?.Invoke(this, EventArgs.Empty);
         }

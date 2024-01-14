@@ -48,6 +48,18 @@ namespace Hex.View
             //_pauseUI.MenuTitleText = "Game Over";
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                _hexEngine.Undo();
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                _hexEngine.Redo();
+            }
+        }
+
         private void _hexEngine_PlayerColorChanged(object sender, System.EventArgs e)
         {
             CurrentPlayerColor = _hexEngine.CurrentColor;

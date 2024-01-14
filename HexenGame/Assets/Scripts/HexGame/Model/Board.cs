@@ -1,6 +1,9 @@
+using CommandPattern;
+using Hex.Model.HexEngine.Commands;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 //using UnityEngine;
 
 namespace Hex.Model
@@ -14,10 +17,26 @@ namespace Hex.Model
 
         public CurrentColor CurrentPlayersColor;
 
+        private CommandInvoker _commandInvoker;
+
         //Creates a new Dictionary with the board's tiles and their corresponding grid positions
         public Dictionary<GridPosition, Tile> Tiles = new Dictionary<GridPosition, Tile>();
 
         public Dictionary<GridPosition, Piece> Pieces = new Dictionary<GridPosition, Piece>();
+
+        public Board()
+        {
+            _commandInvoker = new CommandInvoker();
+        }
+
+        public void Undo()
+        {
+            _commandInvoker.Undo();
+        }
+        public void Redo()
+        {
+            _commandInvoker.Redo();
+        }
 
         public Tile AddTile(GridPosition position)
         {
@@ -73,14 +92,16 @@ namespace Hex.Model
             //}
             if (sender is Tile tileModel)
             {
-                SpawnPiece(tileModel.GridPosition, CurrentPlayersColor);
+                _commandInvoker.ExecuteCommand( new PlacePieceCommand(this, tileModel.GridPosition, CurrentPlayersColor) );
 
-                PositionClicked?.Invoke(this, new PositionEventArgs(tileModel.GridPosition));
+                //SpawnPiece(tileModel.GridPosition, CurrentPlayersColor);
 
-                foreach (Tile tile in tileModel.TilesToBeHighlightedWhenHoveringOver)
-                {
-                    tile.IsHoverHighlighted = false;
-                }
+                //PositionClicked?.Invoke(this, new PositionEventArgs(tileModel.GridPosition));
+
+                //foreach (Tile tile in tileModel.TilesToBeHighlightedWhenHoveringOver)
+                //{
+                //    tile.IsHoverHighlighted = false;
+                //}
 
 
 
@@ -101,11 +122,36 @@ namespace Hex.Model
 
         public Piece SpawnPiece(GridPosition pos, CurrentColor color)
         {
+            Tile tileModel = Tiles.GetValueOrDefault(pos);
+
+            foreach (Piece toBeFlippedPiece in tileModel.PiecesToBeFlipped)
+            {
+                if (toBeFlippedPiece.CurrentColor == CurrentColor.White)
+                {
+                    toBeFlippedPiece.CurrentColor = CurrentColor.Black;
+                }
+                else
+                {
+                    toBeFlippedPiece.CurrentColor = CurrentColor.White;
+                }
+            }
+
+            tileModel.PiecesToBeReflipped.AddRange(tileModel.PiecesToBeFlipped);
+
+
             Piece piece = new Piece(this, pos, color);
 
             Pieces.Add(pos, piece);
 
             PieceSpawned?.Invoke(this, new PieceEventArgs(piece));
+
+
+            PositionClicked?.Invoke(this, new PositionEventArgs(tileModel.GridPosition));
+
+            foreach (Tile tile in tileModel.TilesToBeHighlightedWhenHoveringOver)
+            {
+                tile.IsHoverHighlighted = false;
+            }
 
 
             return piece;
@@ -118,6 +164,24 @@ namespace Hex.Model
                 Pieces[pos].Remove();
                 Pieces.Remove(pos);
             }
+
+            Tile tile = GetTileOnPosition(pos);
+
+            foreach (Piece piece in tile.PiecesToBeReflipped)
+            {
+                if (piece.CurrentColor == CurrentColor.White)
+                {
+                    piece.CurrentColor = CurrentColor.Black;
+                }
+                else
+                {
+                    piece.CurrentColor = CurrentColor.White;
+                }
+            }
+
+            tile.PiecesToBeReflipped.Clear();
+
+            PositionClicked?.Invoke(this, new PositionEventArgs(pos));
         }
 
         //This was not in the PDF. Could also have been in the Chess Engine if done a bit differently

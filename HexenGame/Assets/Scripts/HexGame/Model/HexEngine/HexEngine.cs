@@ -1,3 +1,4 @@
+using CommandPattern;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,6 +35,15 @@ namespace Hex.Model.HexEngine
             board.TileHoverExited += Board_TileHoverExited;
 
             board.CurrentPlayersColor = CurrentColor;
+        }
+
+        public void Undo()
+        {
+            _board.Undo();
+        }
+        public void Redo()
+        {
+            _board.Redo();
         }
 
         private void Board_TileHoverExited(object sender, EventArgs e)

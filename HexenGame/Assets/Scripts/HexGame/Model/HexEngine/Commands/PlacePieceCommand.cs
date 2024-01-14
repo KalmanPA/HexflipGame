@@ -28,7 +28,12 @@ namespace Hex.Model.HexEngine.Commands
 
         public void Undo()
         {
-            //TODO
+            _board.RemovePiece(_pos);
+        }
+
+        public void Redo()
+        {
+            _board.SpawnPiece(_pos, _currentPlayerColor);
         }
     }
 

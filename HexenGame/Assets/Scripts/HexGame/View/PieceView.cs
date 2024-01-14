@@ -14,19 +14,25 @@ namespace Hex.View
         public void SetModel(Piece piece)
         {
             PieceModel = piece;
-            piece.Flipped += Piece_IsFlipped;
+            //piece.Flipped += Piece_IsFlipped;
             piece.Removed += Piece_Removed;
 
             if (piece.CurrentColor == CurrentColor.Black)
             {
-                Piece_IsFlipped(this, EventArgs.Empty);
+                //Piece_IsFlipped(this, EventArgs.Empty);
+                FilpPieceAtStart();
             }
         }
 
-        private void Piece_IsFlipped(object sender, EventArgs e)
+        private void FilpPieceAtStart()
         {
             transform.Rotate(180f, 0f, 0f);
         }
+
+        //private void Piece_IsFlipped(object sender, EventArgs e)
+        //{
+        //    transform.Rotate(180f, 0f, 0f);
+        //}
 
         private void Piece_Removed(object sender, EventArgs e)
         {
@@ -35,7 +41,7 @@ namespace Hex.View
 
         private void OnDestroy()
         {
-            PieceModel.Flipped -= Piece_IsFlipped;
+            //PieceModel.Flipped -= Piece_IsFlipped;
             PieceModel.Removed -= Piece_Removed;
         }
     }

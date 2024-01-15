@@ -29,6 +29,10 @@ namespace Hex.View
         //[SerializeField] private PauseUI _pauseUI;
         //[SerializeField] private GameplayUI _gameplayUI;
 
+        public event EventHandler<FloatEventArguments> NewWhiteProportionalScore;
+
+        public event EventHandler<FloatEventArguments> NewBlacProportionalScore;
+
         public event EventHandler PlayerColorChanged;
 
         public CurrentColor CurrentPlayerColor;
@@ -78,6 +82,10 @@ namespace Hex.View
 
             WhiteProportionalScore = _hexEngine.WhitePlayer.ProportionalScore;
             BlackProportionalScore = _hexEngine.BlackPlayer.ProportionalScore;
+
+            //NewWhiteProportionalScore?.Invoke(this, new FloatEventArguments(WhiteProportionalScore));
+
+            //NewBlacProportionalScore?.Invoke(this, new FloatEventArguments(BlackProportionalScore));
 
             PlayerColorChanged?.Invoke(this, EventArgs.Empty);
         }

@@ -24,6 +24,9 @@ namespace Hex.Model
 
         public Dictionary<GridPosition, Piece> Pieces = new Dictionary<GridPosition, Piece>();
 
+        private bool _isWhiteAbleToFlip = true;
+        private bool _isBlackAbleToFlip = true;
+
         public Board()
         {
             _commandInvoker = new CommandInvoker();
@@ -43,21 +46,48 @@ namespace Hex.Model
             //A method that creates a new tile, adds it to the Dictionary and returns it. Gets called in BoardView.
             Tile tile = new Tile(position);
             tile.Clicked += Tile_Clicked;//Subscribe method that will change their Highlight property
-            tile.HoverEntered += Tile_HoverEntered;
+            tile.HighlightHoverEntered += Tile_HighlightHoverEntered;
             tile.HoverExited += Tile_HoverExited;
+
+            tile.HoverEntered += Tile_HoverEntered;
 
             Tiles.Add(position, tile);//Adds it to Dictionary
 
             return tile;//Need it for the BoardView to assign it to the TileView
         }
 
-        private void Tile_HoverExited(object sender, EventArgs e)
+        private void Tile_HoverEntered(object sender, EventArgs e)
         {
             if (sender is Tile tileModel)
             {
+                if (GetPieceOnPosition(tileModel.GridPosition) != null)
+                {
+                    if (_isWhiteAbleToFlip && CurrentPlayersColor == CurrentColor.White)
+                    {
+
+                        tileModel.IsHoverFlippHighlighted = true;
+                    }
+                    else if(_isBlackAbleToFlip && CurrentPlayersColor == CurrentColor.Black)
+                    {
+                        
+                        tileModel.IsHoverFlippHighlighted = true;
+                    }
+                }
+            }
+        }
+
+        private void Tile_HoverExited(object sender, EventArgs e)
+        {
+            
+
+            if (sender is Tile tileModel)
+            {
+                //tileModel.IsHoverFlippHighlighted = false;
+
                 foreach (Tile tile in tileModel.TilesToBeHighlightedWhenHoveringOver)
                 {
                     tile.IsHoverHighlighted = false;
+                    
                 }
 
                 TileHoverExited?.Invoke(this, EventArgs.Empty);
@@ -66,7 +96,7 @@ namespace Hex.Model
 
         }
 
-        private void Tile_HoverEntered(object sender, EventArgs e)
+        private void Tile_HighlightHoverEntered(object sender, EventArgs e)
         {
 
             if (sender is Tile tileModel)
@@ -90,8 +120,17 @@ namespace Hex.Model
             //{
             //    tileModel.IsHighlighted = true;//We change the tiles Highlight here
             //}
+
             if (sender is Tile tileModel)
             {
+                if (tileModel.IsHoverFlippHighlighted)
+                {
+                    //FlippPiece(tileModel);
+                    _commandInvoker.ExecuteCommand(new FlippSinglePiece(this, tileModel));
+
+                    return;
+                }
+
                 _commandInvoker.ExecuteCommand( new PlacePieceCommand(this, tileModel.GridPosition, CurrentPlayersColor) );
 
                 //SpawnPiece(tileModel.GridPosition, CurrentPlayersColor);
@@ -108,6 +147,68 @@ namespace Hex.Model
             }
 
 
+        }
+
+        public void FlippPiece(Tile tileModel)
+        {
+            Piece piece = GetPieceOnPosition(tileModel.GridPosition);
+
+            tileModel.IsHoverFlippHighlighted = false;
+
+            if (piece.CurrentColor == CurrentColor.White)
+            {
+                piece.CurrentColor = CurrentColor.Black;
+                //_isBlackAbleToFlip = false;
+            }
+            else
+            {
+                piece.CurrentColor = CurrentColor.White;
+                //_isWhiteAbleToFlip = false;
+            }
+
+            if (CurrentPlayersColor == CurrentColor.White)
+            {
+                _isWhiteAbleToFlip = false;
+            }
+            else
+            {
+                _isBlackAbleToFlip = false;
+            }
+
+
+
+            PositionClicked?.Invoke(this, new PositionEventArgs(tileModel.GridPosition));
+        }
+
+        public void FlippBackPiece(Tile tileModel)
+        {
+            Piece piece = GetPieceOnPosition(tileModel.GridPosition);
+
+            //tileModel.IsHoverFlippHighlighted = true;
+
+            if (piece.CurrentColor == CurrentColor.White)
+            {
+                piece.CurrentColor = CurrentColor.Black;
+                //_isBlackAbleToFlip = true;
+            }
+            else
+            {
+                piece.CurrentColor = CurrentColor.White;
+                //_isWhiteAbleToFlip = true;
+            }
+
+            if (CurrentPlayersColor == CurrentColor.White)
+            {
+                _isBlackAbleToFlip = true;
+            }
+            else
+            {
+                _isWhiteAbleToFlip = true;
+            }
+
+
+
+            PositionClicked?.Invoke(this, new PositionEventArgs(tileModel.GridPosition));
         }
 
         public Tile GetTileOnPosition(GridPosition position)

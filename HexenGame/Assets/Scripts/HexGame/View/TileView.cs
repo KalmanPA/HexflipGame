@@ -19,6 +19,8 @@ namespace Hex.View
 
         [SerializeField] private Material _hoverHighlightedMaterial;
 
+        [SerializeField] private Material _hoverFlippHighlightedMaterial;
+
         private Material _defaultMaterial;
 
         private void Awake()
@@ -37,6 +39,13 @@ namespace Hex.View
                                                                //to the tiles higlightchanged event
 
             tile.IsHoverHighlightChanged += Tile_IsHoverHighlightChanged;
+
+            tile.IsHoverFlippHighlightChanged += Tile_IsHoverFlippHighlightChanged; 
+        }
+
+        private void Tile_IsHoverFlippHighlightChanged(object sender, EventArgs e)
+        {
+            _renderer.sharedMaterial = TileModel.IsHoverFlippHighlighted ? _hoverFlippHighlightedMaterial : _defaultMaterial;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -44,6 +53,15 @@ namespace Hex.View
             //TileModel.IsHighlighted = true;
             //The function of the built in intrface
             //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
+
+            if (TileModel.IsHoverFlippHighlighted)
+            {
+                //TileModel.IsHoverFlippHighlighted = false;
+
+                TileModel.Click();
+
+                return;
+            }
 
             if (TileModel.IsHighlighted || TileModel.IsHoverHighlighted)//We only want to run this if the tile is among the higlighted ones
             {
@@ -56,16 +74,24 @@ namespace Hex.View
         {
             //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
 
+
+
             if (TileModel.IsHighlighted)//We only want to run this if the tile is among the higlighted ones
             {
                 //TileModel.IsHoverHighlighted = true;
-                TileModel.OnHoverEnter();
+                TileModel.OnHighlightedHoverEnter();
                 //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");
+
+                return;
             }
+
+            TileModel.OnHoverEnter();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            TileModel.IsHoverFlippHighlighted = false;
+
             if (TileModel.IsHighlighted || TileModel.IsHoverHighlighted)//We only want to run this if the tile is among the higlighted ones
             {
                 //Debug.Log($"Tile{gameObject} is on {TileModel.GridPosition}");

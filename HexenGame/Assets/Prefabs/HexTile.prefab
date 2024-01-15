@@ -72,6 +72,7 @@ MonoBehaviour:
   _renderer: {fileID: 3630031939854607947}
   _highlightedMaterial: {fileID: 2100000, guid: fe7c6997a82aba84198ab24f3b3d6acf, type: 2}
   _hoverHighlightedMaterial: {fileID: 2100000, guid: f209dd1a7b993834f8273ed9f816df06, type: 2}
+  _hoverFlippHighlightedMaterial: {fileID: 2100000, guid: 75dea3e626c0d5742820e2abb05d5f54, type: 2}
 --- !u!1 &4471089766930291179
 GameObject:
   m_ObjectHideFlags: 0

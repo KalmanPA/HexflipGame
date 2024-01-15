@@ -3,4 +3,5 @@
     <Style src="project://database/Assets/UI/PlayerPanel.uss?fileID=7433441132597879392&amp;guid=4685ef709a53174409aa198060a187ee&amp;type=3#PlayerPanel" />
     <ui:Instance template="PlayerName" name="Player1" class="activePlayer" style="width: 300px; -unity-text-align: upper-center; left: 20px; top: 20px;" />
     <ui:Instance template="PlayerName" name="Player2" class="activePlayer" style="left: auto; width: auto; top: 20px; align-self: flex-end; justify-content: flex-start; align-items: stretch; position: absolute; -unity-text-align: upper-center; right: 20px;" />
+    <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ProportionalScore" style="flex-direction: column; justify-content: center; align-items: flex-end; align-self: center; -unity-text-align: upper-center; margin-top: -100px; font-size: 36px;" />
 </ui:UXML>

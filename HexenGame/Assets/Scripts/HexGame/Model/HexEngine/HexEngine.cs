@@ -18,6 +18,9 @@ namespace Hex.Model.HexEngine
 
         public event EventHandler PlayerColorChanged;
 
+        public Player WhitePlayer;
+        public Player BlackPlayer;
+
         //private readonly GridPosition _invalidPosition = new GridPosition(5,5,5);
 
         private readonly Board _board;
@@ -25,8 +28,13 @@ namespace Hex.Model.HexEngine
 
         private List<GridPosition> _validPositions = new List<GridPosition>();
 
+        private int _numberOfAllPieces;
+
         public HexEngine(Board board, CurrentColor currentColor)
         {
+            WhitePlayer = new Player();
+            BlackPlayer = new Player();
+
             _board = board;
             CurrentColor = currentColor;
 
@@ -35,6 +43,7 @@ namespace Hex.Model.HexEngine
             board.TileHoverExited += Board_TileHoverExited;
 
             board.CurrentPlayersColor = CurrentColor;
+
         }
 
         public void Undo()
@@ -91,8 +100,12 @@ namespace Hex.Model.HexEngine
             NumberOfBlackPieces = 0;
             NumberOfWhitePieces = 0;
 
+            _numberOfAllPieces = 0;
+
             foreach (Piece piece in _board.Pieces.Values)
             {
+                _numberOfAllPieces++;
+
                 if (piece.CurrentColor == CurrentColor.White)
                 {
                     NumberOfWhitePieces++;
@@ -102,6 +115,13 @@ namespace Hex.Model.HexEngine
                     NumberOfBlackPieces++;
                 }
             }
+
+            
+            WhitePlayer.NumberOfPieces = _numberOfAllPieces;
+            WhitePlayer.Score = NumberOfWhitePieces;
+
+            BlackPlayer.NumberOfPieces = _numberOfAllPieces;
+            BlackPlayer.Score = NumberOfBlackPieces;
         }
 
         public void FindValidTiles()

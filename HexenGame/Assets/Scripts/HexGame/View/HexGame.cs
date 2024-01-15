@@ -16,6 +16,9 @@ namespace Hex.View
 
         public event EventHandler GameOver;
 
+        public float  WhiteProportionalScore;
+        public float BlackProportionalScore;
+
 
         public int NumberOfWhitePieces;
         public int NumberOfBlackPieces;
@@ -72,6 +75,9 @@ namespace Hex.View
             NumberOfWhitePieces = _hexEngine.NumberOfWhitePieces;
 
             NumberOfBlackPieces = _hexEngine.NumberOfBlackPieces;
+
+            WhiteProportionalScore = _hexEngine.WhitePlayer.ProportionalScore;
+            BlackProportionalScore = _hexEngine.BlackPlayer.ProportionalScore;
 
             PlayerColorChanged?.Invoke(this, EventArgs.Empty);
         }

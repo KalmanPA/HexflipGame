@@ -2,7 +2,9 @@ using Hex.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
 namespace Hex.View.UI
@@ -19,6 +21,8 @@ namespace Hex.View.UI
 
         private HexGame _hexGame;
 
+        Label _playerScore;
+
         //public CurrentColor CurrentColorOfPlayer
         //{
         //    get => currentColorOfPlayer; set
@@ -33,16 +37,18 @@ namespace Hex.View.UI
         {
             _hexGame = GameObject.FindObjectOfType<HexGame>();
 
-            _hexGame.PlayerColorChanged += _hexGame_PlayerColorChanged;
+            _hexGame.PlayerColorChanged += HexGame_PlayerColorChanged;
 
             UIDocument document = GetComponent<UIDocument>();
             VisualElement rootVisual = document.rootVisualElement;
 
             _player1Panel = new PlayerView(CurrentColor.White, rootVisual.Q("Player1"));
             _player2Panel = new PlayerView(CurrentColor.Black, rootVisual.Q("Player2"));
+
+            _playerScore = document.rootVisualElement.Q<Label>("ProportionalScore");
         }
 
-        private void _hexGame_PlayerColorChanged(object sender, EventArgs e)
+        private void HexGame_PlayerColorChanged(object sender, EventArgs e)
         {
             if (_hexGame.CurrentPlayerColor == CurrentColor.White)
             {
@@ -54,6 +60,8 @@ namespace Hex.View.UI
                 _player1Panel.SetHighlighted(false, _hexGame.NumberOfWhitePieces);
                 _player2Panel.SetHighlighted(true, _hexGame.NumberOfBlackPieces);
             }
+
+            _playerScore.text = $"White: {_hexGame.WhiteProportionalScore} Black: {_hexGame.BlackProportionalScore}";
         }
 
         void Start()
